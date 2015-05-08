@@ -2,7 +2,7 @@ import sqlite3
 import sys
 
 from movies import Movies
-
+from reservations import Reservations
 
 if len(sys.argv) <= 1:
     print("Provide database file")
@@ -12,7 +12,7 @@ if len(sys.argv) <= 1:
 db = sys.argv[1]
 
 conn = sqlite3.connect(db)
-conn.row_factory = sqlite3.Row
+# conn.row_factory = sqlite3.Row
 
 commands = ["show movies",
             "show_movie_projections <movie_id>",
@@ -33,9 +33,10 @@ print("""Dear, customer
 command = input(">")
 if command == "1":
     Movies.show_current_movies(conn)
-
-
-
-# print(commands)
-# Movies.show_current_movies(conn)
-
+elif command == "4":
+    username = input("Step 1 (User): Choose name>")
+    Reservations.search_for_user(conn, username)
+    tickets = input("Step 1 (User): Choose number of tickets>")
+    Reservations.make_reservation(conn, username)
+    movie_id = input("Step 2 (Movie): Choose a movie>")
+    Reservations.choose_movie(conn, movie_id)

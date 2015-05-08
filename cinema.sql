@@ -14,7 +14,7 @@ CREATE TABLE Reservations(
 	row	INTEGER,
 	col INTEGER,
 	FOREIGN KEY (projection_id) REFERENCES Projections(id)
-)
+);
 
 
 DROP TABLE IF EXISTS Projections;
