@@ -1,4 +1,5 @@
 import sqlite3
+from movies import Movies
 
 
 class Projections:
@@ -24,6 +25,12 @@ class Projections:
     GET_ALL_PROJECTIONS = """
         SELECT id, movie_id, type, date, time
         FROM Projections
+    """
+
+    GET_CURRENT_MOVIE = """
+        SELECT name
+        FROM Movies
+        WHERE id = ?
     """
 
     @classmethod
@@ -52,12 +59,54 @@ class Projections:
         else:
             result = cursor.execute(cls.GET_ALL_PROJECTIONS)
 
-        return result.fetchmany()
+        return result.fetchall()
 
 
     @classmethod
-    def show_projections(cls, conn):
-        pass
+    def show_projections(cls, conn, movie_id=None, date=None):
+        cursor = conn.cursor()
+
+        
+        projections = cls.get_projections(conn, movie_id, date)
+
+        if not(movie_id is None) and date is None:
+            current_movie = cursor.execute(cls.GET_CURRENT_MOVIE, (movie_id, ))
+            name_curr_movie = current_movie.fetchone()[0]
+            print('Projections for movie ' + name_curr_movie + ':')
+            
+            for projection in projections:
+                pr_id = projection[0]
+                type_movie = projection[2]
+                date = projection[3]
+                time = projection[4]
+                print('[{}] - {} {} ({})'.format(pr_id, date, time, type_movie))
+
+        elif not(movie_id is None) and not(date is None):
+            current_movie = cursor.execute(cls.GET_CURRENT_MOVIE, (movie_id, ))
+            name_curr_movie = current_movie.fetchone()[0]
+            print("Projections for movie {} on date {}:".format(name_curr_movie, date))
+
+            for projection in projections:
+                pr_id = projection[0]
+                type_movie = projection[2]
+                time = projection[4]
+                print('[{}] - {} ({})'.format(pr_id, time, type_movie))
+        else:
+            print('All projections:')
+
+            for projection in projections:
+                pr_id = projection[0]
+                id_movie = projection[1]
+                type_movie = projection[2]
+                date = projection[3]
+                time = projection[4]
+                current_movie = cursor.execute(cls.GET_CURRENT_MOVIE, (id_movie, ))
+                name_curr_movie = current_movie.fetchone()[0]
+
+                print('[{}] - {} on {} at {} ({})'.format(pr_id, name_curr_movie, date, time, type_movie))
+
+        return name_curr_movie
+
 
     @classmethod
     def delete_projections(cla, conn):
