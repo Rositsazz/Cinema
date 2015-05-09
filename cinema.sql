@@ -24,6 +24,7 @@ CREATE TABLE Projections(
 	type VARCHAR(10),
 	date DATE,
 	time DATETIME,
+	available_seats INTEGER DEFAULT 100,
 	FOREIGN KEY(movie_id) REFERENCES Movies(id)
 );
 
