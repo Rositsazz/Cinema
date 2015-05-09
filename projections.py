@@ -35,9 +35,9 @@ class Projections:
 
     @classmethod
     def add_projections(cls, conn, movie_id, type_movie, date, time):
-        
+
         try:
-            
+
             cursor = conn.cursor()
 
             cursor.execute(cls.INSERT_PROJECTION_SQL, (movie_id, type_movie,
@@ -48,11 +48,9 @@ class Projections:
         except:
             pass
 
-
     @classmethod
     def get_projections(cls, conn, movie_id=None, date=None):
         cursor = conn.cursor()
-
 
         if not(movie_id is None) and date is None:
             result = cursor.execute(cls.GET_PROJECTIONS_MOVIE_ID, (movie_id, ))
@@ -63,7 +61,7 @@ class Projections:
 
         return result.fetchall()
 
-    
+
     @classmethod
     def show_projections(cls, conn, movie_id=None, date=None):
         cursor = conn.cursor()
