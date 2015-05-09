@@ -118,7 +118,7 @@ class Projections:
     def get_available_seats_by_id(cls, conn, projection_id):
         cursor = conn.cursor()
         result = cursor.execute(cls.GET_AVAILABLE_SEATS_BY_ID, (projection_id, ))
-        return result.fetchone()
+        return result.fetchone()[0]
 
     @classmethod
     def delete_projections(cla, conn):
