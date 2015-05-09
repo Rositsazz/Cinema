@@ -73,3 +73,4 @@ class Reservations:
         res = cursor.execute(cls.SELECT_ROW_AND_COLUMN_BY_ID, (res_id, ))
         print(res.fetchone())
         conn.commit()
+
