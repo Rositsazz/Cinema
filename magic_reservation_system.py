@@ -4,6 +4,8 @@ import sys
 from movies import Movies
 from projections import Projections
 from reservations import Reservations
+from available_seats import AvailableSeats
+
 
 if len(sys.argv) <= 1:
     print("Provide database file")
@@ -20,6 +22,13 @@ commands = ["show_movies",
             "show_movie_projections <movie_id> <date>",
             "make_reservation",
             "available seat for <movie_id> <date> <time>"]
+
+INSERT_INTO_RESERRVATION = """
+    INSERT INTO Reservations(username, projection_id, row, col)
+    VALUES (?, ?, ?, ?)
+"""
+ROW = -1
+COL = -1
 
 print("""Dear, customer
         Please, choose between these commands:
@@ -61,17 +70,26 @@ while True:
         movie_id = input("Step 2 (Movie): Choose a movie> ")
         Reservations.choose_movie(conn, movie_id)
 
+        projection_id = input("Choose projection number> ")
+        # seats = Projections.get_available_seats_by_id(conn, projection_id)
+        # print("For this projection the available seats are {}".format(seats))
 
+        AvailableSeats.show_available_seats(conn, movie_id, projection_id)
 
+        for i in range(int(tickets)):
+            cursor = conn.cursor()
+            cursor.execute(INSERT_INTO_RESERRVATION, (username, projection_id, ROW, COL ))
 
+        for i in range(int(tickets)):
+            print("\nTicket {} :".format(i+1))
+            ticket = input("row and column: ")
+            row, column = ticket.split(" ")
+            Reservations.change_row_and_column(conn, username, row, column)
 
+        AvailableSeats.show_available_seats(conn, movie_id, projection_id)
 
-
-
-
-
-
-
+        print("{}, You ordered your tickets for the movie".format(username))
+        break
 
 
     elif commands[0] == "exit":

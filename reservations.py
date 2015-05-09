@@ -1,5 +1,6 @@
 from movies import Movies
 from projections import Projections
+# from available_seats import AvailableSeats
 
 
 class Reservations:
@@ -18,6 +19,29 @@ class Reservations:
         WHERE id = ?
         """
 
+    AVAILABLE_SEATS = """
+        SELECT available_seats
+        FROM Projections
+    """
+
+    UPDATE_ROW_AND_COLUMN = """
+        UPDATE Reservations
+        SET row = ?, col = ?
+        WHERE id = ?
+    """
+
+    SELECT_ROW_AND_COLUMN = """
+        SELECT id
+        FROM Reservations
+        WHERE username = ? AND row=-1 AND col=-1
+    """
+
+    SELECT_ROW_AND_COLUMN_BY_ID = """
+        SELECT row, col
+        FROM Reservations
+        WHERE id = ?
+    """
+
     @classmethod
     def make_reservation(cls, conn, username):
 
@@ -31,15 +55,22 @@ class Reservations:
     def search_for_user(cls, conn, username):
         cursor = conn.cursor()
 
-        result = cursor.execute(cls.SEARCH_FOR_USERNAME)
-        print(result.fetchall())
+        cursor.execute(cls.SEARCH_FOR_USERNAME)
         conn.commit()
 
     @classmethod
     def choose_movie(cls, conn, movie_id):
-        cursor = conn.cursor()
-        # movie_name = cursor.execute(cls.CHOOSE_MOVIE_NAME, (movie_id,))
         res = Projections.show_projections(conn, movie_id=movie_id)
         return res
-# [5] - 2014-04-02 19:30 (2D) - 98 spots available
-# [6] - 2014-04-02 22:00 (3D) - 100 spots availabe")
+
+    @classmethod
+    def change_row_and_column(cls, conn, name, row, column):
+        cursor = conn.cursor()
+        null_values = cursor.execute(cls.SELECT_ROW_AND_COLUMN, (name, ))
+        res_id = null_values.fetchone()[0]
+        print(res_id)
+        cursor.execute(cls.UPDATE_ROW_AND_COLUMN, (row, column, res_id))
+        res = cursor.execute(cls.SELECT_ROW_AND_COLUMN_BY_ID, (res_id, ))
+        print(res.fetchone())
+        conn.commit()
+
