@@ -66,14 +66,14 @@ class Projections:
     def show_projections(cls, conn, movie_id=None, date=None):
         cursor = conn.cursor()
 
-        
+
         projections = cls.get_projections(conn, movie_id, date)
 
         if not(movie_id is None) and date is None:
             current_movie = cursor.execute(cls.GET_CURRENT_MOVIE, (movie_id, ))
             name_curr_movie = current_movie.fetchone()[0]
             print('Projections for movie ' + name_curr_movie + ':')
-            
+
             for projection in projections:
                 pr_id = projection[0]
                 type_movie = projection[2]
@@ -105,7 +105,7 @@ class Projections:
 
                 print('[{}] - {} on {} at {} ({})'.format(pr_id, name_curr_movie, date, time, type_movie))
 
-        return name_curr_movie
+        # return name_curr_movie
 
 
     @classmethod

@@ -1,5 +1,6 @@
 from movies import Movies
 from projections import Projections
+# from available_seats import AvailableSeats
 
 
 class Reservations:
@@ -17,6 +18,11 @@ class Reservations:
         FROM Movies
         WHERE id = ?
         """
+
+    AVAILABLE_SEATS = """
+        SELECT available_seats
+        FROM Projections
+    """
 
     @classmethod
     def make_reservation(cls, conn, username):
@@ -38,8 +44,12 @@ class Reservations:
     @classmethod
     def choose_movie(cls, conn, movie_id):
         cursor = conn.cursor()
-        movie_name = cursor.execute(cls.CHOOSE_MOVIE_NAME, (movie_id,))
-        print("Projections for movie {}:".format(movie_name.fetchone()[0]))
-        res = Projections.get_projections(conn, movie_id=movie_id)
+        res = Projections.show_projections(conn, movie_id=movie_id)
+        return res
+        # for row in res:
+            # print(row)
+            # projection_id = row[2]
+            # seats = AvailableSeats.available_seats(conn, projection_id)
+            # print(row + " " + projection_id)
 # [5] - 2014-04-02 19:30 (2D) - 98 spots available
 # [6] - 2014-04-02 22:00 (3D) - 100 spots availabe")

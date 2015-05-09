@@ -35,11 +35,11 @@ class AvailableSeats:
 
         return result.fetchall()
 
-    @classmethod
-    def show_available_seats(cls, conn, movie_id, date, time):
-        pr_id = cls.get_projection_id(conn, movie_id, date, time)
-        av_seats = cls.available_seats(conn, pr_id)
+    # @classmethod
+    # def show_available_seats(cls, conn, movie_id, date, time):
+    #     pr_id = cls.get_projection_id(conn, movie_id, date, time)
+    #     av_seats = cls.available_seats(conn, pr_id)
 
-        for seat in av_seats:
-            x, y = seat
-            ALL_SEATS[x][y] = 'X'
+    #     for seat in av_seats:
+    #         x, y = seat
+    #         ALL_SEATS[x][y] = 'X'

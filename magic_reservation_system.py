@@ -4,6 +4,8 @@ import sys
 from movies import Movies
 from projections import Projections
 from reservations import Reservations
+# from available_seats import AvailableSeats
+
 
 if len(sys.argv) <= 1:
     print("Provide database file")
@@ -58,5 +60,6 @@ while True:
         Reservations.make_reservation(conn, username)
         movie_id = input("Step 2 (Movie): Choose a movie> ")
         Reservations.choose_movie(conn, movie_id)
+        projection_id = input("Choose projection number> ")
     elif commands[0] == "exit":
         break
