@@ -42,4 +42,13 @@ class AvailableSeats:
 
         for seat in av_seats:
             x, y = seat
-            ALL_SEATS[x][y] = 'X'
+            cls.ALL_SEATS[x][y] = 'X'
+
+        print('   1 2 3 4 5 6 7 8 9 10')
+        count = 0
+        for row in cls.ALL_SEATS:
+            count += 1
+            if count == 10:
+                print(str(count) + ' ' + ' '.join(row))
+            else:
+                print(str(count) + '  ' + ' '.join(row))
