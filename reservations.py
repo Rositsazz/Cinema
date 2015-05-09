@@ -38,8 +38,8 @@ class Reservations:
     @classmethod
     def choose_movie(cls, conn, movie_id):
         cursor = conn.cursor()
-        movie_name = cursor.execute(cls.CHOOSE_MOVIE_NAME, (movie_id,))
-        print("Projections for movie {}:".format(movie_name.fetchone()[0]))
-        res = Projections.get_projections(conn, movie_id=movie_id)
+        # movie_name = cursor.execute(cls.CHOOSE_MOVIE_NAME, (movie_id,))
+        res = Projections.show_projections(conn, movie_id=movie_id)
+        return res
 # [5] - 2014-04-02 19:30 (2D) - 98 spots available
 # [6] - 2014-04-02 22:00 (3D) - 100 spots availabe")

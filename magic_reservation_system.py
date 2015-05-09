@@ -54,9 +54,25 @@ while True:
     elif commands[0] == "4":
         username = input("Step 1 (User): Choose name> ")
         Reservations.search_for_user(conn, username)
+
         tickets = input("Step 1 (User): Choose number of tickets> ")
         Reservations.make_reservation(conn, username)
+
         movie_id = input("Step 2 (Movie): Choose a movie> ")
         Reservations.choose_movie(conn, movie_id)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     elif commands[0] == "exit":
         break
