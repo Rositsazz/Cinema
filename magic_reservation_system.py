@@ -51,7 +51,6 @@ while True:
         except:
             print("Wait for correct command :P")
 
-
     elif commands[0] == "4":
         username = input("Step 1 (User): Choose name> ")
         Reservations.search_for_user(conn, username)
