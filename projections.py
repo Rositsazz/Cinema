@@ -33,6 +33,12 @@ class Projections:
         WHERE id = ?
     """
 
+    GET_AVAILABLE_SEATS_BY_ID = """
+        SELECT available_seats
+        FROM Projections
+        WHERE id = ?
+    """
+
     @classmethod
     def add_projections(cls, conn, movie_id, type_movie, date, time):
 
@@ -107,6 +113,12 @@ class Projections:
 
         return name_curr_movie
 
+
+    @classmethod
+    def get_available_seats_by_id(cls, conn, projection_id):
+        cursor = conn.cursor()
+        result = cursor.execute(cls.GET_AVAILABLE_SEATS_BY_ID, (projection_id, ))
+        return result.fetchone()
 
     @classmethod
     def delete_projections(cla, conn):
