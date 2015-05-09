@@ -2,6 +2,7 @@ import sqlite3
 import sys
 
 from movies import Movies
+from projections import Projections
 from reservations import Reservations
 
 if len(sys.argv) <= 1:
@@ -14,7 +15,7 @@ db = sys.argv[1]
 conn = sqlite3.connect(db)
 # conn.row_factory = sqlite3.Row
 
-commands = ["show movies",
+commands = ["show_movies",
             "show_movie_projections <movie_id>",
             "show_movie_projections <movie_id> <date>",
             "make_reservation",
@@ -22,21 +23,41 @@ commands = ["show movies",
 
 print("""Dear, customer
         Please, choose between these commands:
-        1) show movies,
+        1) show_movies,
         2) show_movie_projections <movie_id>,
         3) show_movie_projections <movie_id> <date>,
         4) make_reservation,
         5) available seat for <movie_id> <date> <time>
+        6) exit
 
         FOR US!!!! """)
 
-command = input(">")
-if command == "1":
-    Movies.show_current_movies(conn)
-elif command == "4":
-    username = input("Step 1 (User): Choose name>")
-    Reservations.search_for_user(conn, username)
-    tickets = input("Step 1 (User): Choose number of tickets>")
-    Reservations.make_reservation(conn, username)
-    movie_id = input("Step 2 (Movie): Choose a movie>")
-    Reservations.choose_movie(conn, movie_id)
+while True:
+    command = input("> ")
+
+    commands = command.split(' ')
+
+    if commands[0] == "1":
+        Movies.show_current_movies(conn)
+
+    elif commands[0] == "2":
+        if len(commands) < 2:
+            Projections.show_projections(conn)
+        else:
+            Projections.show_projections(conn, commands[1])
+    elif commands[0] == "3":
+        try:
+            Projections.show_projections(conn, commands[1], commands[2])
+        except:
+            print("Wait for correct command :P")
+
+
+    elif commands[0] == "4":
+        username = input("Step 1 (User): Choose name> ")
+        Reservations.search_for_user(conn, username)
+        tickets = input("Step 1 (User): Choose number of tickets> ")
+        Reservations.make_reservation(conn, username)
+        movie_id = input("Step 2 (Movie): Choose a movie> ")
+        Reservations.choose_movie(conn, movie_id)
+    elif commands[0] == "exit":
+        break
